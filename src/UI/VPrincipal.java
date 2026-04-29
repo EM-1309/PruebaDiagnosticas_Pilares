@@ -62,6 +62,7 @@ public class VPrincipal extends javax.swing.JFrame {
                 // IMPORTANTE: No es estrictamente necesario hacer el ScaledInstance para el icono de la barra
                 // Windows y macOS suelen redimensionarlo automáticamente mejor que el código.
                 this.setIconImage(icono.getImage());
+                this.setIconImages(java.util.Arrays.asList(icono.getImage()));
             } else {
                 // Este log te dirá en la consola si realmente no está encontrando el archivo
                 System.err.println("Error: No se encontró el archivo en /resources/iconoDiagnosis.png");
