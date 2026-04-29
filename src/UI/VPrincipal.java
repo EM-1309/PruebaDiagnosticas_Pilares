@@ -10,6 +10,11 @@ package UI;
  *
  * @author Estudiant
  */
+
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.net.URL;
+
 public class VPrincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VPrincipal.class.getName());
@@ -18,22 +23,69 @@ public class VPrincipal extends javax.swing.JFrame {
      * Creates new form VPrincipal
      */
     public VPrincipal() {
+         // 1. ESTABLECER TÍTULO DE LA VENTANA
+        this.setTitle("Mi Aplicación - Acceso al Sistema");
+        
+        // 2. ESTABLECER ICONO DE LA VENTANA (IMAGEN)
+        establecerIconoVentana();
+        
         // Establecemos el panel de fondo personalizado
         this.setContentPane(new FondoPanel());
-
+        
         initComponents();
         
         this.setResizable(false);
         this.setSize(750, 700);
-
+        
+        // 3. APLICAR ESTILOS A LOS JLABEL
+        EstiloUI.estiloJLabelPrincipal(jLabel1, "Pulse el botón para acceder a la página web");
+        // Si quieres cambiar el texto original, descomenta la línea de abajo
+        // EstiloUI.estiloJLabelNormal(jLabel1, "Haga click en el botón para acceder a la página");
+        
         // Aplicamos estilos centralizados
         EstiloUI.estiloPanelContenedor(jPanel2);
         EstiloUI.estiloBotonPrincipal(btnAbrir);
-
+        
         // Transparencia necesaria para el layout
         jPanel1.setOpaque(false);
-
+        
         this.setLocationRelativeTo(null);
+    }
+    
+    private void establecerIconoVentana() {
+        try {
+            // Opción 1: Cargar icono desde recursos del proyecto
+            // Coloca tu icono en: src/UI/icono.png
+            URL iconURL = getClass().getResource("/resources/iconoDiagnosis.png");
+            
+            // Opción 2: Cargar icono desde archivo externo (descomentar si prefieres esta)
+            // URL iconURL = new URL("file:ruta/a/tu/icono.png");
+            
+            if (iconURL != null) {
+                ImageIcon icono = new ImageIcon(iconURL);
+                Image imagen = icono.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+                this.setIconImage(imagen);
+            } else {
+                // Si no encuentra el icono, intenta con un color de respaldo
+                System.out.println("No se encontró el icono, usando icono por defecto");
+                // Crea un icono simple de color (opcional)
+                this.setIconImage(crearIconoPorDefecto());
+            }
+        } catch (Exception e) {
+            System.err.println("Error al cargar el icono: " + e.getMessage());
+        }
+    }
+    
+    private java.awt.Image crearIconoPorDefecto() {
+        java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(64, 64, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        java.awt.Graphics2D g2d = img.createGraphics();
+        g2d.setColor(EstiloUI.ROJO_IES);
+        g2d.fillRect(0, 0, 64, 64);
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 30));
+        g2d.drawString("App", 12, 42);
+        g2d.dispose();
+        return img;
     }
 
     /**
@@ -57,7 +109,8 @@ public class VPrincipal extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Haga click en el botón para acceder a la página");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Pulse el botón para acceder a la página web");
         jLabel1.setToolTipText("");
         jLabel1.setAlignmentY(0.0F);
 
@@ -65,6 +118,7 @@ public class VPrincipal extends javax.swing.JFrame {
         btnAbrir.setForeground(new java.awt.Color(255, 255, 255));
         btnAbrir.setText("Abrir");
         btnAbrir.setAlignmentY(1.0F);
+        btnAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAbrir.addActionListener(this::btnAbrirActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -72,12 +126,10 @@ public class VPrincipal extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(btnAbrir)))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAbrir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
                 .addGap(44, 44, 44))
         );
         jPanel2Layout.setVerticalGroup(
@@ -85,7 +137,7 @@ public class VPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(105, 105, 105)
                 .addComponent(jLabel1)
-                .addGap(59, 59, 59)
+                .addGap(68, 68, 68)
                 .addComponent(btnAbrir)
                 .addContainerGap(115, Short.MAX_VALUE))
         );
