@@ -54,25 +54,22 @@ public class VPrincipal extends javax.swing.JFrame {
     
     private void establecerIconoVentana() {
         try {
-            // Opción 1: Cargar icono desde recursos del proyecto
-            // Coloca tu icono en: src/UI/icono.png
+            // Intentamos cargar el recurso
             URL iconURL = getClass().getResource("/resources/iconoDiagnosis.png");
-            
-            // Opción 2: Cargar icono desde archivo externo (descomentar si prefieres esta)
-            // URL iconURL = new URL("file:ruta/a/tu/icono.png");
-            
+
             if (iconURL != null) {
                 ImageIcon icono = new ImageIcon(iconURL);
-                Image imagen = icono.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
-                this.setIconImage(imagen);
+                // IMPORTANTE: No es estrictamente necesario hacer el ScaledInstance para el icono de la barra
+                // Windows y macOS suelen redimensionarlo automáticamente mejor que el código.
+                this.setIconImage(icono.getImage());
             } else {
-                // Si no encuentra el icono, intenta con un color de respaldo
-                System.out.println("No se encontró el icono, usando icono por defecto");
-                // Crea un icono simple de color (opcional)
+                // Este log te dirá en la consola si realmente no está encontrando el archivo
+                System.err.println("Error: No se encontró el archivo en /resources/iconoDiagnosis.png");
                 this.setIconImage(crearIconoPorDefecto());
             }
         } catch (Exception e) {
-            System.err.println("Error al cargar el icono: " + e.getMessage());
+            System.err.println("Excepción al cargar el icono: " + e.getMessage());
+            this.setIconImage(crearIconoPorDefecto());
         }
     }
     
